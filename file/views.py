@@ -33,10 +33,11 @@ def sort_words_by_last_letter(words):
 def download_result(request, pk, result_type):
     file_instance = get_object_or_404(UploadedFile, pk=pk)
     file_path = file_instance.file.path
-
     text = read_docx(file_path)
+    text_son = len(text.split())
     words = extract_words(text)
     word_counts = dict(Counter(words))
+    word_son = len(word_counts.keys())
     sorted_word_counts = sorted(word_counts.items())
     alifbo = sort_words_alphabetically_with_counts(words)
     alifbo_end = sort_words_by_last_letter(words)
@@ -65,8 +66,6 @@ def download_result(request, pk, result_type):
     ctx = {
         'file_instance': file_instance,
         'text': text,
-        'text_son': text_son,
-        'word_son': word_son,
         'word_counts': word_counts.items(),
         "sorted_word_counts": sorted_word_counts,
         "alifbo": alifbo,
@@ -131,7 +130,5 @@ def upload_file(request):
 
 def delete_file(request, pk):
     file = get_object_or_404(UploadedFile, pk=pk)
-    if request.method == 'POST':
-        file.delete()
-        return redirect('file_list')
-    return render(request, 'file_confirm_delete.html', {'file': file})
+    file.delete()
+    return redirect('upload_file')
