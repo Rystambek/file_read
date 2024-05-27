@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Management</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 10px;
+            background: #f7f7f7;
+        }
+        .container {
+            max-width: 1200px;
+            background: #fff;
+            width: 100%;
+            padding: 25px 40px 10px 40px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .text {
+            text-align: center;
+            font-size: 30px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        form {
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label[for="file"] {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"] {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        a.button:hover {
+            background: #2980b9;
+        }
+        .delete-form {
+            display: inline;
+        }
+        .delete-button {
+            display: inline-block;
+            background: #e74c3c;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text">Faylni yuklash</div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file">Fayl yuklash</label>
+            <input type="file" name="document" id="file" required>
+            <button type="submit" class="button">Upload</button>
+        </form>
+
+        <h2>Yuklangan fayllar</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fayl Nomi</th>
+                    <th>Fayl hajmi</th>
+                    <th>Yaratilgan vaqti</th>
+                    <th>Amallar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                <tr>
+                    <td>{{ file.id }}</td>
+                    <td>{{ file.file.name }}</td>
+                    <td>{{ file.file.size|filesizeformat }}</td>
+                    <td>{{ file.uploaded_at }}</td>
+                    <td>
+                        <a href="{% url 'file_detail' file.id %}" class="button">Ochish</a>
+                        <form method="post" action="{% url 'delete_file' file.id %}" class="delete-form">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button">O'chirish</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('file').addEventListener('change', function() {
+            var fileInput = this;
+            var fileLabel = document.querySelector('label[for="file"]');
+            
+            if (fileInput.files.length > 0) {
+                var fileName = fileInput.files[0].name;
+                fileLabel.textContent = fileName;
+            } else {
+                fileLabel.textContent = 'Fayl yuklash';
+            }
+        });
+    </script>
+</body>
+</html>

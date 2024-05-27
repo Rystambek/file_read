@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <div class="section about-us events">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <div class="section-heading">
+            <h2 style="padding-left: 30%;">Fayl haqida umumiy ma'lumot</h2>
+          </div>
+        </div>
+        <div class="col-lg-6 offset-lg-1">
+          <div class="accordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header ">
+                 Text
+              </h2>
+              <div  class="accordion-collapse collapse show" >
+                <div class="accordion-body" style="max-height: 500px; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+                  {{ text }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 align-self-center">
+          <div class="section-heading">
+            <h6>Text haqida ma'lumot</h6>
+            <h2></h2>
+            <p>Fayl nomi: {{ file_instance.file.name }}</p>
+            <p>So'zlar soni: <strong> {{text_son}}</strong> ta</p>
+            <p>Takrorlanmas so'zlar soni: <strong>{{word_son}} ta</strong></p>
+          </div>
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  So'zlarni alifbo tartibda saralash
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <div class="row">
+                    <div class="col-6">
+                      <h2>So'z</h2>
+                      <hr>
+                      {% for word, count in alifbo %}
+                      <p>{{ word }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-6">
+                      <h2>Son</h2>
+                      <hr>
+                      {% for word, count in alifbo %}
+                      <p>{{ count }}</p>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="main-button">
+                    <a href="{% url 'download_result' pk=file_instance.pk result_type='alifbo' %}">Yuklab olish</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  So'zlar qatnashgan soni
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <div class="row">
+                    <div class="col-6">
+                      <h2>Soni</h2>
+                      {% for word, count in sorted_word_counts %}
+                      <p>{{ count }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-6">
+                      <h2>So'z</h2>
+                      {% for word, count in sorted_word_counts %}
+                      <p>{{ word }}</p>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="main-button">
+                    <a href="{% url 'download_result' pk=file_instance.pk result_type='sorted_word_counts' %}">Yuklab olish</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  So'zlar chastotasi
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <div class="row">
+                    <div class="col-6">
+                      <h2>Soni</h2>
+                      {% for word, count in alifbo_end %}
+                      <p>{{ word }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-6">
+                      <h2>So'z</h2>
+                      {% for word, count in alifbo_end %}
+                      <p>{{ count }}</p>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                <div class="main-button">
+                  <a href="{% url 'download_result' pk=file_instance.pk result_type='alifbo_end' %}">Yuklab olish</a>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Webkit asosli brauzerlar uchun (Chrome, Safari, Edge, Opera) */
+    .accordion-body::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  {% endblock content %}
+  

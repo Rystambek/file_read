@@ -1,0 +1,12 @@
+Word,Count
+ha`r,3
+ishlaring,20
+ketgan,3
+nimlar,20
+o‘tmishda,3
+o’qishlaring,20
+qalaysan,20
+qilayabsan,20
+qolib,3
+Salom,20
+yaxshimi,40
